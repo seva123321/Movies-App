@@ -1,0 +1,70 @@
+.card {
+  height: 280px;
+  width: clamp(450px, 100%, 100%);
+  box-shadow: 0px 4px 12px 0px #00000026;
+  overflow: hidden;
+
+  &__image {
+    height: auto;
+    display: 'block';
+    max-width: 273px;
+    max-height: 279px;
+  }
+
+  &__content {
+    padding: 10px;
+    padding-left: 20px;
+    font-size: 12px;
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  &__date {
+    margin-bottom: 8px;
+  }
+
+  &__ganre {
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: 'wrap';
+  }
+
+  &__text {
+    text-align: left;
+    max-height: 129px;
+    overflow-y: hidden;
+    line-height: 22px;
+    margin-bottom: 1px;
+  }
+
+  @media screen and (max-width: 720px) {
+    &__content {
+      padding: 24px;
+    }
+  }
+  @media screen and (max-width: 560px) {
+    display: block;
+    width: clamp(320px, 100%, 100%);
+    &__content {
+      padding: 16px;
+    }
+    &__image {
+      max-height: 95px;
+    }
+  }
+}
+
+// .card__badge {
+//   color: aqua;
+//   width: 35px;
+//   height: 35px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center; // Добавлено для центрирования текста
+//   color: black; // Убраны одинарные кавычки
+//   font-size: 12px;
+// }

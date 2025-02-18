@@ -1,6 +1,6 @@
 import './Page.module.scss'
 import { Input, Pagination } from 'antd'
-import { Fragment, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import RadioGroup from '../RaioGroup/RadioGroup'
 import CardsList from '../CardsList/CardsList'
@@ -25,11 +25,6 @@ function Page() {
     typeError: '',
     message: '',
   })
-
-  useEffect(() => {
-    fetchData() 
-    
-  }, [current, label])
 
   const onDataLoaded = (result) => {
     setData(result)
@@ -64,47 +59,47 @@ function Page() {
     setLoading(false)
   }
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!label) {
       await api.getMovies(current).then(onDataLoaded).catch(onError)
-
       return
     }
     await api.getSearchMovies(label, current).then(onDataLoaded).catch(onError)
-  }
+  }, [current, label])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const { typeError, isError, message } = error
 
   const hasData = !(loading || isError)
   const content = hasData ? <CardsList data={data} /> : null
   const skeleton = loading ? <SkeletonList /> : null
-
   const messageError = error.isError ? <Alert message={message} /> : null
-  const isPageError = typeError === 'noConnectError' && isError
-  const pageError = isPageError ? <PageError /> : null
+
+  if (typeError === 'noConnectError' && isError) {
+    return <PageError />
+  }
 
   return (
     <>
-      {pageError || (
-        <>
-          <RadioGroup />
-          <Input.Search
-            placeholder="Try to search..."
-            onChange={handleChangeSearch}
-            value={label}
-          />
-          {content}
-          {skeleton}
-          {messageError}
-          <Pagination
-            onChange={handleChangePage}
-            current={current}
-            defaultCurrent={1}
-            total={totalPages}
-            align="center"
-          />
-        </>
-      )}
+      <RadioGroup />
+      <Input.Search
+        placeholder="Try to search..."
+        onChange={handleChangeSearch}
+        value={label}
+      />
+      {content}
+      {skeleton}
+      {messageError}
+      <Pagination
+        onChange={handleChangePage}
+        current={current}
+        defaultCurrent={1}
+        total={totalPages}
+        align="center"
+      />
     </>
   )
 }

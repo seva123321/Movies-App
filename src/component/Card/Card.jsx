@@ -62,7 +62,7 @@ function MyCard({ ...props }) {
             />
           </Flex>
           <Text type="secondary" className={style.card__date}>
-            {format(parseISO(date), 'MMMM d, y')}
+            {date ? format(parseISO(date), 'MMMM d, y') : 'no date'}
           </Text>
           <Flex className={style.card__ganre}>
             <Button size="small">Action</Button>

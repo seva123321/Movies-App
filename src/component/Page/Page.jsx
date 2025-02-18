@@ -27,7 +27,8 @@ function Page() {
   })
 
   useEffect(() => {
-    fetchData()
+    fetchData() 
+    
   }, [current, label])
 
   const onDataLoaded = (result) => {

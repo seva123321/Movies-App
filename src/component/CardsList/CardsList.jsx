@@ -9,29 +9,11 @@ function CardsList({ data = [] }) {
 
   return (
     <Row gutter={[18, 18]} className={style.cardsList}>
-      {results.map((res) => (
+      {results?.map((res) => (
         <Col lg={12} xs={24} key={res.id}>
           <Card {...res} />
         </Col>
       ))}
-      {/* <Col lg={12} xs={24}>
-        <Card />
-      </Col>
-      <Col lg={12} xs={24}>
-        <Card />
-      </Col>
-      <Col lg={12} xs={24}>
-        <Card />
-      </Col>
-      <Col lg={12} xs={24}>
-        <Card />
-      </Col>
-      <Col lg={12} xs={24}>
-        <Card />
-      </Col>
-      <Col lg={12} xs={24}>
-        <Card />
-      </Col> */}
     </Row>
   )
 }

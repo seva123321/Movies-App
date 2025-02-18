@@ -1,3 +1,5 @@
+import NoNetError from './ErrorHandler'
+
 export default class ApiService {
   #apiKey = 'acfb8ae41f140bd262811d79c223b49b'
 
@@ -6,15 +8,18 @@ export default class ApiService {
   // #baseURLImage = 'https://image.tmdb.org/t/p/w500/'
 
   async getResource(url) {
-    const res = await fetch(url)
+    if (navigator.onLine) {
+      const res = await fetch(url)
 
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, received status ${res.status}`)
+      if (!res.ok) {
+        throw new Error(`Could not fetch ${url}, received status ${res.status}`)
+      }
+
+      this.resource = await res.json()
+
+      return this.resource
     }
-
-    this.resource = await res.json()
-
-    return this.resource
+    throw new NoNetError('Нет подключения к Интеренету')
   }
 
   async getMovies(page) {

@@ -6,6 +6,7 @@ import RadioGroup from '../RaioGroup/RadioGroup'
 import CardsList from '../CardsList/CardsList'
 import SkeletonList from '../SkeletonList/SkeletonList'
 import ApiService from '../../service/ApiService'
+import debounce from '../../service/Utils'
 import NoNetError from '../../service/ErrorHandler'
 import Alert from '../Alert/Alert'
 
@@ -58,7 +59,6 @@ function Page() {
     }))
     setLoading(false)
   }
-
   const fetchData = useCallback(async () => {
     if (!label) {
       await api.getMovies(current).then(onDataLoaded).catch(onError)
@@ -67,9 +67,22 @@ function Page() {
     await api.getSearchMovies(label, current).then(onDataLoaded).catch(onError)
   }, [current, label])
 
-  useEffect(() => {
-    fetchData()
+  const debouncedFetchData = useCallback(() => {
+    const debouncedFn = debounce(() => fetchData(), 500)
+    return debouncedFn
   }, [fetchData])
+
+  useEffect(() => {
+    if (label) {
+      debouncedFetchData()
+    } else {
+      fetchData()
+    }
+
+    return () => {
+      debouncedFetchData.cancel()
+    }
+  }, [debouncedFetchData, fetchData, label])
 
   const { typeError, isError, message } = error
 

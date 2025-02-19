@@ -67,10 +67,10 @@ function Page() {
     await api.getSearchMovies(label, current).then(onDataLoaded).catch(onError)
   }, [current, label])
 
-  const debouncedFetchData = useCallback(() => {
-    const debouncedFn = debounce(() => fetchData(), 500)
-    return debouncedFn
-  }, [fetchData])
+  const debouncedFetchData = useCallback(
+    debounce(() => fetchData(), 500),
+    [fetchData]
+  )
 
   useEffect(() => {
     if (label) {

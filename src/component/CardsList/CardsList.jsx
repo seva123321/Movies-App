@@ -8,9 +8,16 @@ function CardsList({ data = [] }) {
   const { results } = data
 
   return (
-    <Row gutter={[18, 18]} className={style.cardsList}>
+    <Row gutter={[24, 24]} className={style.cardsList} justify="center">
       {results?.map((res) => (
-        <Col lg={12} xs={24} key={res.id}>
+        <Col
+          xxl={8}
+          lg={12}
+          md={18}
+          xs={24}
+          key={res.id}
+          style={{ maxWidth: '600px' }}
+        >
           <Card {...res} />
         </Col>
       ))}

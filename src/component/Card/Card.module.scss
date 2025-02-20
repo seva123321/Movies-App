@@ -1,5 +1,6 @@
 .card {
   height: 280px;
+  // max-width: 600px;
   padding: 0;
   overflow: 'hidden';
   width: clamp(450px, 100%, 100%);
@@ -9,15 +10,17 @@
   &__image {
     height: auto;
     display: 'block';
-    max-width: 273px;
+    width: 273px;
     max-height: 279px;
   }
 
   &__image_skelet {
-    display: 'block' !important;
-    width: 180px !important;
-    height: 100% !important;
-    background: rgba(0, 0, 0, 0.06);
+    display: 'block';
+    width: clamp(60px, 100%, 313px);
+    // width: 273px;
+    height: 279px;
+    // max-height: 279px;
+    background-color: rgba(167, 158, 158, 0.859);
   }
 
   &__content {
@@ -29,31 +32,49 @@
 
   &__title {
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
     text-align: left;
   }
 
   &__date {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   &__ganre {
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 7px;
+    margin-bottom: 7px;
     flex-wrap: 'wrap';
   }
 
   &__text {
     text-align: left;
-    max-height: 129px;
+    height: 129px;
     overflow-y: hidden;
     line-height: 22px;
     margin-bottom: 1px;
+  }
+  &__rate {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
   }
 
   @media screen and (max-width: 720px) {
     &__content {
       padding: 24px;
+    }
+  }
+  @media screen and (max-width: 560px) {
+    &__image {
+      // width: auto;
+      max-width: 60px;
+      margin: 8px;
+      // height: 91px;
+    }
+    &__image_skelet {
+      max-width: 60px;
+      height: 91px;
+      margin: 8px;
     }
   }
   @media screen and (max-width: 560px) {
@@ -68,13 +89,85 @@
   }
 }
 
-// .card__badge {
-//   color: aqua;
-//   width: 35px;
-//   height: 35px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center; // Добавлено для центрирования текста
-//   color: black; // Убраны одинарные кавычки
-//   font-size: 12px;
+// .card {
+//   height: 280px;
+//   padding: 0;
+//   overflow: 'hidden';
+//   width: clamp(450px, 100%, 100%);
+//   box-shadow: 0px 4px 12px 0px #00000026;
+//   overflow: hidden;
+
+//   &__image {
+//     height: auto;
+//     // display: 'block';
+//     // width: 273px;
+//     max-height: 279px;
+//   }
+
+//   &__image_skelet {
+//     display: 'block';
+//     width: clamp(60px, 100%, 273px);
+//     // width: 273px;
+//     height: 100%;
+//     max-height: 279px;
+//     background-color: rgba(167, 158, 158, 0.859);
+//   }
+
+//   &__content {
+//     font-size: 12px;
+//     width: 100%;
+//   }
+
+//   &__title {
+//     margin-top: 0;
+//     margin-bottom: 0 !important;
+//     text-align: left;
+//   }
+
+//   &__date {
+//     // margin-bottom: 7px;
+//   }
+
+//   &__ganre {
+//     gap: 7px;
+//     // margin-bottom: 7px;
+//     flex-wrap: 'wrap';
+//   }
+
+//   &__text {
+//     text-align: left;
+//     height: 129px;
+//     overflow-y: hidden;
+//     line-height: 22px;
+//     // margin-bottom: 1px;
+//   }
+
+//   @media screen and (max-width: 720px) {
+//     &__content {
+//       // padding: 24px;
+//     }
+//   }
+//   @media screen and (max-width: 560px) {
+//     &__image {
+//       // width: auto;
+//       max-width: 60px;
+//       // height: 91px;
+//     }
+//     // &__image_skelet {
+//     //   display: 'block';
+//     //   width: 60px;
+//     //   height: 91px;
+
+//     // }
+//   }
+//   @media screen and (max-width: 560px) {
+//     display: block;
+//     width: clamp(320px, 100%, 100%);
+//     &__content {
+//       // padding: 16px;
+//     }
+//     &__image {
+//       max-height: 95px;
+//     }
+//   }
 // }

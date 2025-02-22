@@ -10,7 +10,7 @@
     "lint:fix": "eslint src/**/*.{js,jsx} --fix",
     "format": "prettier --write src/",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "src/**/*{js,jsx}": [
@@ -32,7 +32,6 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "airbnb": "^0.0.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^10.0.1",

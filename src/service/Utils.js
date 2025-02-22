@@ -1,26 +1,15 @@
 const debounce = (fn, debounceTime) => {
-  let isCalled = false
   let idTimer
 
   const debouncedFn = (...rest) => {
-    if (isCalled) {
-      clearTimeout(idTimer)
-      isCalled = false
-    }
-
-    if (!isCalled) {
-      idTimer = setTimeout(() => {
-        fn.apply(this, rest)
-        isCalled = false
-      }, debounceTime)
-
-      isCalled = true
-    }
+    clearTimeout(idTimer)
+    idTimer = setTimeout(() => {
+      fn.apply(this, rest)
+    }, debounceTime)
   }
 
   debouncedFn.cancel = () => {
     clearTimeout(idTimer)
-    isCalled = false
   }
 
   return debouncedFn

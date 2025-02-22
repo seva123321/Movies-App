@@ -13,7 +13,6 @@ import Alert from '../Alert/Alert'
 import PageError from './PageError'
 
 const api = new ApiService()
-// let data = await api.getMovies(1)
 
 function Page() {
   const [label, setLabel] = useState('')
@@ -67,12 +66,9 @@ function Page() {
     await api.getSearchMovies(label, current).then(onDataLoaded).catch(onError)
   }, [current, label])
 
-  const debouncedFetchData = useCallback(
-    debounce(() => fetchData(), 500),
-    [fetchData]
-  )
-
   useEffect(() => {
+    const debouncedFetchData = debounce(fetchData, 500)
+
     if (label) {
       debouncedFetchData()
     } else {
@@ -82,7 +78,7 @@ function Page() {
     return () => {
       debouncedFetchData.cancel()
     }
-  }, [debouncedFetchData, fetchData, label])
+  }, [fetchData, label])
 
   const { typeError, isError, message } = error
 

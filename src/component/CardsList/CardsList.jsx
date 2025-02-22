@@ -10,14 +10,7 @@ function CardsList({ data = [] }) {
   return (
     <Row gutter={[24, 24]} className={style.cardsList} justify="center">
       {results?.map((res) => (
-        <Col
-          xxl={8}
-          lg={12}
-          md={18}
-          xs={24}
-          key={res.id}
-          style={{ maxWidth: '600px' }}
-        >
+        <Col xxl={8} lg={12} xs={24} key={res.id} style={{ maxWidth: '600px' }}>
           <Card {...res} />
         </Col>
       ))}

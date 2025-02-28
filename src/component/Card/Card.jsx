@@ -1,18 +1,33 @@
 import { Flex, Rate, Badge, Card, Skeleton, Button, Typography } from 'antd'
 import { parseISO, format } from 'date-fns'
+import { useState } from 'react'
+
+import useApi from '../../hook/useApi'
 
 import style from './Card.module.scss'
 
 const { Title, Text, Paragraph } = Typography
 
 function MyCard({ ...props }) {
+  const [rate, setRate] = useState(0)
   const {
+    id,
     title,
     release_date: date,
-    vote_average: starsRating,
+    // vote_average: starsRating,
     poster_path: imgPath,
     overview,
   } = props
+
+  const api = useApi()
+
+  const onChangeRate = async (movieId, rateValue) => {
+    setRate(rateValue)
+
+    const guestSesObj = localStorage.getItem('guestSessionId')
+    const { guestSessionId } = JSON.parse(guestSesObj)
+    await api.postAddRateByMovieId(movieId, guestSessionId, rateValue)
+  }
 
   return (
     <Card
@@ -58,7 +73,7 @@ function MyCard({ ...props }) {
                 border: '4px solid #faad14',
                 borderRadius: '50%',
               }}
-              count={+starsRating.toFixed(1)}
+              count={rate}
               showZero
               color="#ffff"
             />
@@ -81,8 +96,10 @@ function MyCard({ ...props }) {
       <Rate
         className={style.card__rate}
         count={10}
-        defaultValue={starsRating}
-        disabled
+        defaultValue={rate}
+        // defaultValue={starsRating}
+        // disabled
+        onChange={(value) => onChangeRate(id, value)}
         allowHalf
       />
     </Card>

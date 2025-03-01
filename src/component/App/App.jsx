@@ -5,7 +5,8 @@ import { Tabs } from 'antd'
 import SearchPage from '../Page/SearchPage/SearchPage'
 import RatePage from '../Page/RatePage/RatePage'
 import ApiService from '../../service/ApiService'
-import ApiContext from '../../service/Context'
+import { ApiContext } from '../../service/Context'
+import GenreProvider from '../../hoc/GenreProvider'
 
 const items = [
   { key: 1, label: 'Search', children: <SearchPage /> },
@@ -17,12 +18,14 @@ function App() {
 
   return (
     <ApiContext.Provider value={api}>
-      <Tabs
-        defaultActiveKey="1"
-        destroyInactiveTabPane
-        items={items}
-        centered
-      />
+      <GenreProvider>
+        <Tabs
+          defaultActiveKey="1"
+          destroyInactiveTabPane
+          items={items}
+          centered
+        />
+      </GenreProvider>
     </ApiContext.Provider>
   )
 }

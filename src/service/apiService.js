@@ -75,7 +75,7 @@ export default class ApiService {
     return result
   }
 
-  async getRateForGuestSession(guestSessionId) {
+  async getRateForGuestSession(guestSessionId, page) {
     //-
     // https://api.themoviedb.org/3/guest_session/e524c931a0767b596b9f42959326eba9/rated/movies?api_key=acfb8ae41f140bd262811d79c223b49b
     // const guestSessionId = 'e524c931a0767b596b9f42959326eba9'
@@ -84,6 +84,8 @@ export default class ApiService {
       this.#baseURL
     )
     url.searchParams.set('api_key', this.#apiKey)
+    url.searchParams.set('page', page)
+
     const result = await this.getResource(url)
 
     return result
@@ -175,7 +177,6 @@ export default class ApiService {
     const url = new URL('3/trending/movie/day', this.#baseURL)
     url.searchParams.set('api_key', this.#apiKey)
     url.searchParams.set('page', page)
-
     return url
   }
 

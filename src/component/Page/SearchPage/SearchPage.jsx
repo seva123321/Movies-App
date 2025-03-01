@@ -14,7 +14,6 @@ function SearchPage() {
   const [label, setLabel] = useState('')
   const [current, setCurrent] = useState(1)
   const [data, setData] = useState(null)
-  const [totalPages, setTotalPages] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({
     isError: false,
@@ -23,11 +22,12 @@ function SearchPage() {
   })
 
   const api = useApi()
+
   // const { getMovies, getSearchMovies, getGuestSession } = api
 
   const onDataLoaded = (result) => {
     setData(result)
-    setTotalPages(result.total_pages)
+    // setTotalPages(result.total_pages)
     setLoading(false)
   }
 
@@ -117,7 +117,7 @@ function SearchPage() {
   const { typeError, isError, message } = error
 
   const hasData = !(loading || isError)
-  const content = hasData ? <CardsList data={data} /> : null
+  const content = hasData ? <CardsList data={data.results} /> : null
   const skeleton = loading ? <SkeletonList /> : null
   const messageError = error.isError ? <Alert message={message} /> : null
 
@@ -135,13 +135,15 @@ function SearchPage() {
       {content}
       {skeleton}
       {messageError}
-      <Pagination
-        onChange={handleChangePage}
-        current={current}
-        defaultCurrent={1}
-        total={totalPages}
-        align="center"
-      />
+      {data?.total_pages > 1 && (
+        <Pagination
+          onChange={handleChangePage}
+          current={current}
+          defaultCurrent={1}
+          total={data?.total_pages}
+          align="center"
+        />
+      )}
     </>
   )
 }

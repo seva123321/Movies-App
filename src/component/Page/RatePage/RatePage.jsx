@@ -12,7 +12,6 @@ import useApi from '../../../hook/useApi'
 function RatePage() {
   const [current, setCurrent] = useState(1)
   const [data, setData] = useState(null)
-  const [totalPages, setTotalPages] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({
     isError: false,
@@ -23,7 +22,9 @@ function RatePage() {
 
   const onDataLoaded = (result) => {
     setData(result)
-    setTotalPages(result.total_pages)
+
+    // setTotalPages(result.total_pages)
+    // console.log(totalPages)
     setLoading(false)
   }
 
@@ -52,19 +53,19 @@ function RatePage() {
     const { guestSessionId } = JSON.parse(guestSesObj)
 
     await api
-      .getRateForGuestSession(guestSessionId)
+      .getRateForGuestSession(guestSessionId, current)
       .then(onDataLoaded)
       .catch(onError)
-  }, [api])
+  }, [current, api])
 
   useEffect(() => {
     fetchData()
-  }, [fetchData])
+  }, [fetchData, current])
 
   const { typeError, isError, message } = error
 
   const hasData = !(loading || isError)
-  const content = hasData ? <CardsList data={data} /> : null
+  const content = hasData ? <CardsList data={data.results} /> : null
   const skeleton = loading ? <SkeletonList /> : null
   const messageError = error.isError ? <Alert message={message} /> : null
 
@@ -74,21 +75,18 @@ function RatePage() {
 
   return (
     <>
-      {/* <Input.Search
-        placeholder="Try to search..."
-        onChange={handleChangeSearch}
-        value={label}
-      /> */}
       {content}
       {skeleton}
       {messageError}
-      <Pagination
-        onChange={handleChangePage}
-        current={current}
-        defaultCurrent={1}
-        total={totalPages}
-        align="center"
-      />
+      {data?.total_pages > 1 && (
+        <Pagination
+          onChange={handleChangePage}
+          current={current}
+          defaultCurrent={1}
+          total={data?.total_pages}
+          align="center"
+        />
+      )}
     </>
   )
 }

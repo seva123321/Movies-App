@@ -1,20 +1,24 @@
-import { Flex, Rate, Badge, Card, Skeleton, Button, Typography } from 'antd'
+import { Flex, Rate, Badge, Card, Typography } from 'antd'
 import { parseISO, format } from 'date-fns'
 import { useState } from 'react'
 
 import useApi from '../../hook/useApi'
+import GenresBox from '../GenresBox/GenresBox'
 
 import style from './Card.module.scss'
 
 const { Title, Text, Paragraph } = Typography
 
 function MyCard({ ...props }) {
-  const [rate, setRate] = useState(0)
+  const [rate, setRate] = useState({})
+  const [imageError, setImageError] = useState(false)
+
   const {
     id,
     title,
     release_date: date,
-    // vote_average: starsRating,
+    genre_ids: genreIds,
+    rating = 0,
     poster_path: imgPath,
     overview,
   } = props
@@ -22,11 +26,27 @@ function MyCard({ ...props }) {
   const api = useApi()
 
   const onChangeRate = async (movieId, rateValue) => {
-    setRate(rateValue)
+    setRate((prev) => ({ ...prev, [movieId]: rateValue }))
 
     const guestSesObj = localStorage.getItem('guestSessionId')
     const { guestSessionId } = JSON.parse(guestSesObj)
     await api.postAddRateByMovieId(movieId, guestSessionId, rateValue)
+  }
+
+  const setBageColor = (value) => {
+    switch (true) {
+      case value >= 0 && value < 3:
+        return '#E90000'
+
+      case value >= 3 && value < 5:
+        return '#E97E00'
+
+      case value >= 5 && value < 7:
+        return '#E9D100'
+
+      default:
+        return '#66E900'
+    }
   }
 
   return (
@@ -41,12 +61,12 @@ function MyCard({ ...props }) {
       }}
     >
       <Flex align="start" style={{ padding: '0px' }}>
-        {imgPath ? (
+        {imgPath && !imageError ? (
           <img
             alt="Постер фильма"
             src={`https://image.tmdb.org/t/p/w500/${imgPath}`}
             className={style.card__image}
-            placeholder={<Skeleton.Image active className={style.badge} />}
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className={style.card__image_skelet} />
@@ -70,10 +90,10 @@ function MyCard({ ...props }) {
                 justifyContent: 'center',
                 color: 'black',
                 fontSize: '16px',
-                border: '4px solid #faad14',
+                border: `4px solid ${setBageColor(rating || rate[id] || 0)}`,
                 borderRadius: '50%',
               }}
-              count={rate}
+              count={rating || rate[id] || 0}
               showZero
               color="#ffff"
             />
@@ -81,24 +101,15 @@ function MyCard({ ...props }) {
           <Text type="secondary" className={style.card__date}>
             {date ? format(parseISO(date), 'MMMM d, y') : 'no date'}
           </Text>
-          <Flex className={style.card__ganre}>
-            <Button style={{ height: '20px', width: '46px', fontSize: '12px' }}>
-              Action
-            </Button>
-            <Button style={{ height: '20px', width: '46px', fontSize: '12px' }}>
-              Drama
-            </Button>
-          </Flex>
+          <GenresBox genres={genreIds} />
           <Paragraph className={style.card__text}>{overview}</Paragraph>
         </Flex>
       </Flex>
-      {/* <Paragraph className={style.card__text}>{overview}</Paragraph> */}
+
       <Rate
         className={style.card__rate}
         count={10}
-        defaultValue={rate}
-        // defaultValue={starsRating}
-        // disabled
+        value={rating || rate[id] || 0}
         onChange={(value) => onChangeRate(id, value)}
         allowHalf
       />

@@ -5,113 +5,100 @@ export default class ApiService {
 
   #baseURL = 'https://api.themoviedb.org/'
 
-  // #baseURLImage = 'https://image.tmdb.org/t/p/w500/'
-
-  async getResource(url) {
-    if (navigator.onLine) {
-      const res = await fetch(url)
-
-      if (!res.ok) {
-        throw new Error(`Could not fetch ${url}, received status ${res.status}`)
-      }
-
-      this.resource = await res.json()
-
-      return this.resource
+  // Общий метод для выполнения GET-запросов
+  async #fetchData(url) {
+    if (!navigator.onLine) {
+      throw new NoNetError('Нет подключения к Интернету')
     }
-    throw new NoNetError('Нет подключения к Интеренету')
+
+    const res = await fetch(url)
+
+    if (!res.ok) {
+      const errorData = await res.json()
+      throw new Error(JSON.stringify(errorData))
+    }
+
+    this.resource = await res.json() // Используем this
+    return this.resource
   }
 
-  async postResource(url, body) {
-    if (navigator.onLine) {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(body),
-      })
-
-      if (!res.ok) {
-        throw new Error(`Could not fetch ${url}, received status ${res.status}`)
-      }
-
-      this.resource = await res.json()
-
-      return this.resource
+  // Общий метод для выполнения POST-запросов
+  async #postData(url, body) {
+    if (!navigator.onLine) {
+      throw new NoNetError('Нет подключения к Интернету')
     }
-    throw new NoNetError('Нет подключения к Интеренету')
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!res.ok) {
+      throw new Error(`Could not fetch ${url}, received status ${res.status}`)
+    }
+
+    this.resource = await res.json() // Используем this
+    return this.resource
   }
+
+  // Метод для создания URL с базовыми параметрами
+  #createUrl(endpoint, params = {}) {
+    const url = new URL(endpoint, this.#baseURL)
+    url.searchParams.set('api_key', this.#apiKey)
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.set(key, value)
+    })
+
+    return url
+  }
+
+  // Методы для работы с API
 
   async getGuestSession() {
-    const url = new URL('3/authentication/guest_session/new', this.#baseURL)
-    url.searchParams.set('api_key', this.#apiKey)
-    const result = await this.getResource(url)
-
-    return result
+    const url = this.#createUrl('3/authentication/guest_session/new')
+    return this.#fetchData(url)
   }
 
   async postAddRateByMovieId(movieId, guestSessionId, rateValue) {
-    const url = new URL(`3/movie/${movieId}/rating`, this.#baseURL)
-    url.searchParams.set('guest_session_id', guestSessionId)
-    url.searchParams.set('api_key', this.#apiKey)
+    const url = this.#createUrl(`3/movie/${movieId}/rating`, {
+      guest_session_id: guestSessionId,
+    })
 
     const body = { value: rateValue }
-
-    const result = await this.postResource(url, body)
-
-    return result
+    return this.#postData(url, body)
   }
 
   async getRateForGuestSession(guestSessionId, page) {
-    const url = new URL(
+    const url = this.#createUrl(
       `3/guest_session/${guestSessionId}/rated/movies`,
-      this.#baseURL
+      {
+        page,
+      }
     )
-    url.searchParams.set('api_key', this.#apiKey)
-    url.searchParams.set('page', page)
 
-    const result = await this.getResource(url)
-
-    return result
+    return this.#fetchData(url)
   }
 
   async getGenreMovie() {
-    const url = new URL('3/genre/movie/list', this.#baseURL)
-    url.searchParams.set('api_key', this.#apiKey)
-
-    const result = await this.getResource(url)
-
-    return result
+    const url = this.#createUrl('3/genre/movie/list')
+    return this.#fetchData(url)
   }
 
   async getMovies(page) {
-    const url = this.createUrlMovies(page)
-    const result = await this.getResource(url)
-
-    return result
+    const url = this.#createUrl('3/trending/movie/day', { page })
+    return this.#fetchData(url)
   }
 
   async getSearchMovies(searchWords, page) {
-    const url = this.createUrlSearchMovies(searchWords, page)
-    const result = await this.getResource(url)
+    const url = this.#createUrl('3/search/movie', {
+      query: searchWords,
+      page,
+    })
 
-    return result
-  }
-
-  createUrlSearchMovies(searchWords, page) {
-    const url = new URL('3/search/movie', this.#baseURL)
-    url.searchParams.set('api_key', this.#apiKey)
-    url.searchParams.set('query', searchWords)
-    url.searchParams.set('page', page)
-
-    return url
-  }
-
-  createUrlMovies(page) {
-    const url = new URL('3/trending/movie/day', this.#baseURL)
-    url.searchParams.set('api_key', this.#apiKey)
-    url.searchParams.set('page', page)
-    return url
+    return this.#fetchData(url)
   }
 }

@@ -1,6 +1,6 @@
 import './SearchPage.module.scss'
 import { Input, Pagination } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import CardsList from '../../CardsList/CardsList'
 import SkeletonList from '../../SkeletonList/SkeletonList'
@@ -15,6 +15,7 @@ function SearchPage() {
   const [current, setCurrent] = useState(1)
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const searchInputRef = useRef()
   const [error, setError] = useState({
     isError: false,
     typeError: '',
@@ -98,7 +99,7 @@ function SearchPage() {
 
   useEffect(() => {
     const debouncedFetchData = debounce(fetchData, 500)
-
+    searchInputRef.current.focus()
     if (label) {
       debouncedFetchData()
     } else {
@@ -129,6 +130,7 @@ function SearchPage() {
         placeholder="Try to search..."
         onChange={handleChangeSearch}
         value={label}
+        ref={searchInputRef}
       />
       {content}
       {skeleton}

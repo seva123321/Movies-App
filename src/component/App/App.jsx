@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import './App.module.scss'
 import { Tabs } from 'antd'
 
+import ApiService from '@/service/ApiService'
+
 import SearchPage from '../Page/SearchPage/SearchPage'
 import RatePage from '../Page/RatePage/RatePage'
-import ApiService from '../../service/ApiService'
 import { ApiContext } from '../../service/Context'
 import GenreProvider from '../../hoc/GenreProvider'
 import RatingProvider from '../../hoc/RatingProvider'

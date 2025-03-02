@@ -23,14 +23,6 @@ function SearchPage() {
 
   const api = useApi()
 
-  // const { getMovies, getSearchMovies, getGuestSession } = api
-
-  const onDataLoaded = (result) => {
-    setData(result)
-    // setTotalPages(result.total_pages)
-    setLoading(false)
-  }
-
   const handleChangePage = (page) => {
     setCurrent(page)
   }
@@ -39,6 +31,11 @@ function SearchPage() {
     const searchWords = e.target.value
     setLabel(searchWords)
     setCurrent(1)
+  }
+
+  const onDataLoaded = (result) => {
+    setData(result)
+    setLoading(false)
   }
 
   const onError = (err) => {
@@ -81,6 +78,7 @@ function SearchPage() {
 
     if (!guestSesObj) {
       query()
+      localStorage.removeItem('moviesRating')
       return
     }
 
@@ -139,8 +137,9 @@ function SearchPage() {
         <Pagination
           onChange={handleChangePage}
           current={current}
+          pageSize={20}
           defaultCurrent={1}
-          total={data?.total_pages}
+          total={data?.total_results}
           align="center"
         />
       )}

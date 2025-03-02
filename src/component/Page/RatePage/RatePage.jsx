@@ -18,18 +18,16 @@ function RatePage() {
     typeError: '',
     message: '',
   })
+
   const api = useApi()
-
-  const onDataLoaded = (result) => {
-    setData(result)
-
-    // setTotalPages(result.total_pages)
-    // console.log(totalPages)
-    setLoading(false)
-  }
 
   const handleChangePage = (page) => {
     setCurrent(page)
+  }
+
+  const onDataLoaded = (result) => {
+    setData(result)
+    setLoading(false)
   }
 
   const onError = (err) => {
@@ -48,6 +46,7 @@ function RatePage() {
     }))
     setLoading(false)
   }
+
   const fetchData = useCallback(async () => {
     const guestSesObj = localStorage.getItem('guestSessionId')
     const { guestSessionId } = JSON.parse(guestSesObj)
@@ -83,7 +82,8 @@ function RatePage() {
           onChange={handleChangePage}
           current={current}
           defaultCurrent={1}
-          total={data?.total_pages}
+          total={data?.total_results}
+          pageSize={20}
           align="center"
         />
       )}

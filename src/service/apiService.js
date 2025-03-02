@@ -1,11 +1,11 @@
 import NoNetError from './ErrorHandler'
 
-export default class ApiService {
+class ApiService {
   #apiKey = 'acfb8ae41f140bd262811d79c223b49b'
 
   #baseURL = 'https://api.themoviedb.org/'
 
-  // Общий метод для выполнения GET-запросов
+  // Общие метод для выполнения запросов
   async #fetchData(url) {
     if (!navigator.onLine) {
       throw new NoNetError('Нет подключения к Интернету')
@@ -18,11 +18,10 @@ export default class ApiService {
       throw new Error(JSON.stringify(errorData))
     }
 
-    this.resource = await res.json() // Используем this
+    this.resource = await res.json()
     return this.resource
   }
 
-  // Общий метод для выполнения POST-запросов
   async #postData(url, body) {
     if (!navigator.onLine) {
       throw new NoNetError('Нет подключения к Интернету')
@@ -40,11 +39,10 @@ export default class ApiService {
       throw new Error(`Could not fetch ${url}, received status ${res.status}`)
     }
 
-    this.resource = await res.json() // Используем this
+    this.resource = await res.json()
     return this.resource
   }
 
-  // Метод для создания URL с базовыми параметрами
   #createUrl(endpoint, params = {}) {
     const url = new URL(endpoint, this.#baseURL)
     url.searchParams.set('api_key', this.#apiKey)
@@ -102,3 +100,5 @@ export default class ApiService {
     return this.#fetchData(url)
   }
 }
+
+export default ApiService

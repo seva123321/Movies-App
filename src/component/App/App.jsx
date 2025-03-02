@@ -7,10 +7,19 @@ import RatePage from '../Page/RatePage/RatePage'
 import ApiService from '../../service/ApiService'
 import { ApiContext } from '../../service/Context'
 import GenreProvider from '../../hoc/GenreProvider'
+import RatingProvider from '../../hoc/RatingProvider'
 
 const items = [
-  { key: 1, label: 'Search', children: <SearchPage /> },
-  { key: 2, label: 'Rated', children: <RatePage /> },
+  {
+    key: 1,
+    label: 'Search',
+    children: <SearchPage />,
+  },
+  {
+    key: 2,
+    label: 'Rated',
+    children: <RatePage />,
+  },
 ]
 
 function App() {
@@ -19,12 +28,14 @@ function App() {
   return (
     <ApiContext.Provider value={api}>
       <GenreProvider>
-        <Tabs
-          defaultActiveKey="1"
-          destroyInactiveTabPane
-          items={items}
-          centered
-        />
+        <RatingProvider>
+          <Tabs
+            defaultActiveKey="1"
+            destroyInactiveTabPane
+            items={items}
+            centered
+          />
+        </RatingProvider>
       </GenreProvider>
     </ApiContext.Provider>
   )

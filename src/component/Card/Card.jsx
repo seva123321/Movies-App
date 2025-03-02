@@ -19,12 +19,12 @@ function MyCard({ onRated, ...props }) {
 
   const {
     id,
-    title,
+    title = '',
     release_date: date,
     genre_ids: genreIds,
     rating: rate = 0,
-    poster_path: imgPath,
-    overview,
+    poster_path: imgPath = '',
+    overview = '',
   } = props
 
   useEffect(() => {

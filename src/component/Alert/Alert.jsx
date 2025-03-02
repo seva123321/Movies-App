@@ -2,12 +2,15 @@ import { Alert } from 'antd'
 
 import style from './Alert.module.scss'
 
-function AlertError({ message }) {
+function AlertError({
+  message,
+  description = 'Попробуйте перезагрузить страницу.',
+}) {
   return (
     <Alert
       className={style.alert}
       message={message}
-      description="Попробуйте перезагрузить страницу."
+      description={description}
       type="error"
       closable
     />

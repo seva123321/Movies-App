@@ -1,6 +1,6 @@
+import { useState, useEffect, useCallback, useMemo, memo } from 'react'
 import { Flex, Rate, Badge, Card, Typography } from 'antd'
 import { parseISO, format } from 'date-fns'
-import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import useApi from '../../hook/useApi'
@@ -11,7 +11,7 @@ import style from './Card.module.scss'
 
 const { Title, Text, Paragraph } = Typography
 
-function MyCard({ onRated, ...props }) {
+const MyCard = memo(({ onRated, ...props }) => {
   const [imageError, setImageError] = useState(false)
   const [dataRate, setDataRate] = useState({})
   const api = useApi()
@@ -32,18 +32,21 @@ function MyCard({ onRated, ...props }) {
     setDataRate(storedRatings)
   }, [])
 
-  const onChangeRate = async (movieId, rateValue) => {
-    updateRating(movieId, rateValue)
-    const objRate = JSON.parse(localStorage.getItem('moviesRating')) || {}
-    const newObjRate = { ...objRate, [movieId]: rateValue }
-    localStorage.setItem('moviesRating', JSON.stringify(newObjRate))
+  const onChangeRate = useCallback(
+    async (movieId, rateValue) => {
+      updateRating(movieId, rateValue)
+      const objRate = JSON.parse(localStorage.getItem('moviesRating')) || {}
+      const newObjRate = { ...objRate, [movieId]: rateValue }
+      localStorage.setItem('moviesRating', JSON.stringify(newObjRate))
 
-    const guestSesObj = localStorage.getItem('guestSessionId')
-    if (!guestSesObj) return
+      const guestSesObj = localStorage.getItem('guestSessionId')
+      if (!guestSesObj) return
 
-    const { guestSessionId } = JSON.parse(guestSesObj)
-    await api.postAddRateByMovieId(movieId, guestSessionId, rateValue)
-  }
+      const { guestSessionId } = JSON.parse(guestSesObj)
+      await api.postAddRateByMovieId(movieId, guestSessionId, rateValue)
+    },
+    [updateRating, api]
+  )
 
   const setBageColor = (value) => {
     if (value >= 0 && value < 3) return '#E90000'
@@ -52,7 +55,11 @@ function MyCard({ onRated, ...props }) {
     return '#66E900'
   }
 
-  const currentRating = ratings[id] || dataRate[id] || rate || 0
+  const currentRating = useMemo(
+    () => ratings[id] || dataRate[id] || rate || 0,
+    [ratings, dataRate, id, rate]
+  )
+
   return (
     <Card
       hoverable
@@ -119,7 +126,7 @@ function MyCard({ onRated, ...props }) {
       />
     </Card>
   )
-}
+})
 
 MyCard.propTypes = {
   id: PropTypes.number.isRequired,

@@ -10,12 +10,15 @@
     width: 273px;
     max-height: 279px;
   }
-
-  &__image_skelet {
-    display: block;
+  
+  &__imageFallback {
     width: clamp(60px, 100%, 313px);
     height: 279px;
-    background-color: rgba(167, 158, 158, 0.859);
+    background-image: url("../../../public/imageFallback.webp");
+    background-position: center;
+    background-color: rgb(4 25 57 / 95%);
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 
   &__content {

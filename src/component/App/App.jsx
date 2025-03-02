@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import './App.module.scss'
 import { Tabs } from 'antd'
 
-import ApiService from '@/service/ApiService'
+import ApiService from '@/service/apiService'
 
 import SearchPage from '../Page/SearchPage/SearchPage'
 import RatePage from '../Page/RatePage/RatePage'

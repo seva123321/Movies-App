@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { GenreContext } from '../service/Context'
-import ApiService from '../service/ApiService'
+import ApiService from '../service/apiService'
 
 function GenreProvider({ children }) {
   const [genres, setGenres] = useState([])

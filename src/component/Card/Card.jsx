@@ -3,9 +3,10 @@ import { Flex, Rate, Badge, Card, Typography } from 'antd'
 import { parseISO, format } from 'date-fns'
 import PropTypes from 'prop-types'
 
-import useApi from '../../hook/useApi'
-import useRating from '../../hook/useRating'
-import GenresBox from '../GenresBox/GenresBox'
+import useApi from '@/hook/useApi'
+import useRating from '@/hook/useRating'
+
+import GenresBox from '../GenresBox'
 
 import style from './Card.module.scss'
 

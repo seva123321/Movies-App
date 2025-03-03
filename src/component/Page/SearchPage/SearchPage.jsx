@@ -2,13 +2,14 @@ import './SearchPage.module.scss'
 import { Input, Pagination } from 'antd'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import CardsList from '../../CardsList/CardsList'
-import SkeletonList from '../../SkeletonList/SkeletonList'
-import debounce from '../../../service/Utils'
-import NoNetError from '../../../service/ErrorHandler'
-import Alert from '../../Alert/Alert'
+import debounce from '@/service/Utils'
+import NoNetError from '@/service/ErrorHandler'
+import useApi from '@/hook/useApi'
+
+import CardsList from '../../CardsList'
+import SkeletonList from '../../SkeletonList'
+import Alert from '../../Alert'
 import PageError from '../PagePageError'
-import useApi from '../../../hook/useApi'
 
 function SearchPage() {
   const [label, setLabel] = useState('')

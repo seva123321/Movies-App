@@ -1,7 +1,7 @@
 import { Flex, Button } from 'antd'
 import { useEffect, useState } from 'react'
 
-import useGenre from '../../hook/useGenre'
+import useGenre from '@/hook/useGenre'
 
 import style from './GenreBox.module.scss'
 

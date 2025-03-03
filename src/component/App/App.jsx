@@ -3,12 +3,12 @@ import './App.module.scss'
 import { Tabs } from 'antd'
 
 import ApiService from '@/service/apiService'
+import { ApiContext } from '@/service/Context'
+import GenreProvider from '@/hoc/GenreProvider'
+import RatingProvider from '@/hoc/RatingProvider'
 
-import SearchPage from '../Page/SearchPage/SearchPage'
-import RatePage from '../Page/RatePage/RatePage'
-import { ApiContext } from '../../service/Context'
-import GenreProvider from '../../hoc/GenreProvider'
-import RatingProvider from '../../hoc/RatingProvider'
+import SearchPage from '../Page/SearchPage'
+import RatePage from '../Page/RatePage'
 
 const items = [
   {

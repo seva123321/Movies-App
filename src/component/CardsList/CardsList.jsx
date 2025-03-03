@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd'
 import PropTypes from 'prop-types'
 
-import Card from '../Card/Card'
+import Card from '../Card'
 
 import style from './CardsList.module.scss'
 

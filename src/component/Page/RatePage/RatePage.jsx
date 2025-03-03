@@ -2,12 +2,13 @@ import './RatePage.module.scss'
 import { Pagination } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 
-import CardsList from '../../CardsList/CardsList'
-import SkeletonList from '../../SkeletonList/SkeletonList'
-import NoNetError from '../../../service/ErrorHandler'
-import Alert from '../../Alert/Alert'
+import useApi from '@/hook/useApi'
+import NoNetError from '@/service/ErrorHandler'
+
+import CardsList from '../../CardsList'
+import SkeletonList from '../../SkeletonList'
+import Alert from '../../Alert'
 import PageError from '../PagePageError'
-import useApi from '../../../hook/useApi'
 
 function RatePage() {
   const [current, setCurrent] = useState(1)

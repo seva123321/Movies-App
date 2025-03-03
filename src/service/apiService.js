@@ -1,9 +1,9 @@
 import NoNetError from './ErrorHandler'
 
 class ApiService {
-  #apiKey = 'acfb8ae41f140bd262811d79c223b49b'
+  #apiKey = import.meta.env.VITE_API_KEY
 
-  #baseURL = 'https://api.themoviedb.org/'
+  #baseURL = import.meta.env.VITE_API_URL
 
   // Общие метод для выполнения запросов
   async #fetchData(url) {

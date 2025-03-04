@@ -47,20 +47,27 @@
    ```
    git clone https://github.com/seva123321/movie-db.git
    ```
+
 2. Перейдите в папку проекта:
+
    ```
    cd movie-db
    ```
+
    Run
-  
+
 3. Установите зависимости:
    ```
    npm install
    ```
 4. Запустите проект:
+
    ```
    npm run dev
    ```
 
 5. Откройте браузер и перейдите по адресу: http://localhost:5173.
-   
+
+## Автор
+
+- [Всеволод Могучий](https://github.com/seva123321)
